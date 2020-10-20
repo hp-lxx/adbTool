@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Cap LUA-Android开发工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description"
+          content="Admin panel developed with the Bootstrap from Twitter."/>
+    <meta name="author" content="travis"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/site.css" rel="stylesheet"/>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet"/>
+    <!--[if lt IE 9]>
+    <script src="js/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/dialog/tips_mdialog.css"/>
+</head>
+<body>
+<div th:include="header :: header" class="navbar navbar-fixed-top"/>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span9">
+            <div class="row-fluid">
+                <div class="page-header">
+                    <h1>
+                        App
+                        <small><a href="javascript:saveHandler()">保存</a></small>
+                    </h1>
+                </div>
+                <div>
+
+                    <span> <a th:each="item : ${session.paths}" th:href="'javascript:toFile(\''+${item.path}+'\')'"
+                              th:text="${item.fileName}"></a></span>
+
+                </div>
+                <div>
+
+                    <div id="message"></div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <hr/>
+
+    <footer class="well">
+        &copy; 请注意打开手机 USB 调试模式<br></br> <a href="mailto:xiao-xiang.li@successinfo.com.cn"
+                                            target="_blank">dev Asher</a>
+    </footer>
+    <!-- alpha div -->
+    <div id="maskLayer" style="display:none;">
+        <iframe id="maskLayer_iframe" frameBorder="0" scrolling="no" style="filter:alpha(opacity=50)"></iframe>
+        <div id="alphadiv" style="filter:alpha(opacity=50);-moz-opacity:0.5;opacity:0.5"></div>
+        <div id="drag">
+            <h3 id="drag_h"></h3>
+            <div id="drag_con"></div><!-- drag_con end -->
+        </div>
+    </div><!-- maskLayer end -->
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/dialog/tips_zepto.min.js"></script>
+<script type="text/javascript" src="/dialog/tips_mdialog.js"></script>
+<script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+
+ function saveHandler(){
+      var content = $("#message").html();
+      var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "save.html");
+ }
+
+
+ var websocket = null;
+ //判断当前浏览器是否支持WebSocket
+ if('WebSocket' in window){
+  //连接WebSocket节点
+  websocket = new WebSocket("ws://localhost:8070/connectWebSocket/001");
+ }
+ else{
+  alert('Not support websocket')
+ }
+
+
+ //连接发生错误的回调方法
+ websocket.onerror = function(){
+  setMessageInnerHTML("error");
+ };
+
+
+ //连接成功建立的回调方法
+ websocket.onopen = function(event){
+  setMessageInnerHTML("open");
+ }
+
+
+ //接收到消息的回调方法
+ websocket.onmessage = function(event){
+  setMessageInnerHTML(event.data);
+ }
+
+
+ //连接关闭的回调方法
+ websocket.onclose = function(){
+  setMessageInnerHTML("close");
+ }
+
+
+ //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+ window.onbeforeunload = function(){
+  websocket.close();
+ }
+
+
+ //将消息显示在网页上
+ function setMessageInnerHTML(innerHTML){
+ $("#message").prepend("<p class='three'>"+innerHTML+"</p>");
+ }
+
+
+ //关闭连接
+ function closeWebSocket(){
+  websocket.close();
+ }
+
+
+ //发送消息
+ function send(){
+  var message = document.getElementById('text').value;
+  websocket.send(message);
+ }
+
+    /*]]>*/
+
+</script>
+</body>
+</html>

@@ -238,6 +238,11 @@ public class AdbToolController {
         return 1;
     }
 
+    @RequestMapping(value = "/log", method = RequestMethod.GET)
+    public String Logcat(){
+        return "logcat";
+    }
+
     private void delFolder(String folderPath) {
         try {
             delAllFile(folderPath); //删除完里面所有内容

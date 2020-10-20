@@ -21,7 +21,7 @@
 <body>
 <div th:include="header :: header" class="navbar navbar-fixed-top"/>
 <div class="container-fluid">
-    <div class="row-fluid" >
+    <div class="row-fluid">
         <div class="span9">
             <div class="row-fluid">
                 <div class="page-header">
@@ -31,7 +31,10 @@
                     </h1>
                 </div>
                 <div>
-                   <span> <a  th:each="item : ${session.paths}" th:href="'javascript:toFile(\''+${item.path}+'\')'" th:text="${item.fileName}"></a></span>
+
+                    <span> <a th:each="item : ${session.paths}" th:href="'javascript:toFile(\''+${item.path}+'\')'"
+                              th:text="${item.fileName}"></a></span>
+                    <span> <a href="/log"> 日志 </a></span>
                 </div>
                 <table class="table table-striped table-bordered table-condensed">
                     <thead>
@@ -43,11 +46,14 @@
                     </thead>
                     <tbody>
 
-                    <tr th:each="item : ${beans}" class="list-users" height="30px" align="center"  >
-                        <td style="line-height: 30px;vertical-align: middle;align-content: center" width="30px"> <img th:src="${item.isFile?'img/file.png':'img/file_de.png'}" height="20px" width="20px"/></td>
-                        <td style="cursor:pointer;line-height: 30px" th:text="${item.fileName}" th:onclick="'javascript:toFile(\''+${item.path}+'\','+${item.isFile}+','+${item.canOpen}+')'"></td>
-                        <td width="250px" style="line-height: 30px" ><a href="javascript:return false"
-                                             th:onclick="'javascript:toPull(\''+${item.path}+'\')'"><i
+                    <tr th:each="item : ${beans}" class="list-users" height="30px" align="center">
+                        <td style="line-height: 30px;vertical-align: middle;align-content: center" width="30px"><img
+                                th:src="${item.isFile?'img/file.png':'img/file_de.png'}" height="20px" width="20px"/>
+                        </td>
+                        <td style="cursor:pointer;line-height: 30px" th:text="${item.fileName}"
+                            th:onclick="'javascript:toFile(\''+${item.path}+'\','+${item.isFile}+','+${item.canOpen}+')'"></td>
+                        <td width="250px" style="line-height: 30px"><a href="javascript:return false"
+                                                                       th:onclick="'javascript:toPull(\''+${item.path}+'\')'"><i
                         ></i> 导出</a>
                             <a href="javascript:return false"
                                th:onclick="'javascript:showInput(\''+${item.path}+'\',\''+${item.outInputPath}+'\')'">外部导入</a>
@@ -67,9 +73,9 @@
 
     <hr/>
 
-    <footer class="well" >
+    <footer class="well">
         &copy; 请注意打开手机 USB 调试模式<br></br> <a href="mailto:xiao-xiang.li@successinfo.com.cn"
-                                          target="_blank">dev Asher</a>
+                                            target="_blank">dev Asher</a>
     </footer>
     <!-- alpha div -->
     <div id="maskLayer" style="display:none;">
@@ -84,8 +90,8 @@
 
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script type="text/javascript"  src="/dialog/tips_zepto.min.js"></script>
-<script type="text/javascript"  src="/dialog/tips_mdialog.js"></script>
+<script type="text/javascript" src="/dialog/tips_zepto.min.js"></script>
+<script type="text/javascript" src="/dialog/tips_mdialog.js"></script>
 
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
@@ -272,6 +278,7 @@
     }
 
     /*]]>*/
+
 </script>
 </body>
 </html>

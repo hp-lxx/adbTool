@@ -39,4 +39,29 @@ public class JavaExeBat {
         }
         return null;
     }
+
+
+    public static BufferedReader exeCmdStream(String cmd) {
+        Process p;
+        //test.bat中的命令是ipconfig/all
+//        cmd = "adb shell pm list package";
+        try {
+            //执行命令
+//            System.out.println(cmd);
+            p = Runtime.getRuntime().exec(cmd);
+            //取得命令结果的输出流
+            InputStream fis = p.getInputStream();
+            //用一个读输出流类去读
+            InputStreamReader isr = new InputStreamReader(fis);
+            //用缓冲器读行
+            BufferedReader br = new BufferedReader(isr);
+            String line = null;
+
+//            System.out.println(stringBuffer.toString());
+            return br;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
